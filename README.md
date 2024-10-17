@@ -56,3 +56,24 @@ pip install scrapy
 
 Confirm installation by running:
 scrapy --version
+
+Finding the Directory:
+Open CMD/PS
+python -m site --user-site
+
+C:\Users\<USERNAME>\AppData\Roaming\Python\Python313\site-packages
+
+---
+V2 - Integrating Scrappy to Bettercap Caplets
+---
+
+Inside the site-packages directory, you'll find Scrapy installed. However, for usage purposes, Scrapy will execute from your Python installation path. The scrapy command should be available globally once installed via pip.
+
+1. Scrapy Project Creation and Setup
+Navigate to your bettercap directory, for example:
+cd C:\ProgramData\bettercap\caplets\bk-aio
+
+Then create the Scrapy project:
+scrapy startproject aio_scrapy
+
+This will generate the default Scrapy project structure in C:\ProgramData\bettercap\caplets\bk-aio\aio_scrapy.
