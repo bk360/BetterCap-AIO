@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="refresh" content="5"> <!-- Auto-refresh every 5 seconds -->
+    <title>Captured Data</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        pre { background-color: #f4f4f4; padding: 10px; border: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Captured Data</h1>
+    <div id="captured-log">
+        <pre>
+            <?php echo file_get_contents("/usr/local/share/bettercap/ui/captured-data/passwords.txt"); ?>
+        </pre>
+        <pre>
+            <?php echo file_get_contents("/usr/local/share/bettercap/ui/captured-data/uploads.txt"); ?>
+        </pre>
+    </div>
+</body>
+</html>
