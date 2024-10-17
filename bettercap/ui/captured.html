@@ -7,17 +7,46 @@
     <style>
         body { font-family: Arial, sans-serif; }
         pre { background-color: #f4f4f4; padding: 10px; border: 1px solid #ddd; }
+        button { margin: 5px; padding: 10px; }
     </style>
+    <script>
+        function startAttack(attackType) {
+            fetch(`/start_attack?type=${attackType}`)
+                .then(response => response.text())
+                .then(data => {
+                    alert(data); // Show response message
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+
+        function stopAttack(attackType) {
+            fetch(`/stop_attack?type=${attackType}`)
+                .then(response => response.text())
+                .then(data => {
+                    alert(data); // Show response message
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+        }
+    </script>
 </head>
 <body>
     <h1>Captured Data</h1>
     <div id="captured-log">
         <pre>
-            <?php echo file_get_contents("/usr/local/share/bettercap/ui/captured-data/passwords.txt"); ?>
+            <?php echo file_get_contents("C:/ProgramData/bettercap/ui/captured-data/passwords.txt"); ?>
         </pre>
         <pre>
-            <?php echo file_get_contents("/usr/local/share/bettercap/ui/captured-data/uploads.txt"); ?>
+            <?php echo file_get_contents("C:/ProgramData/bettercap/ui/captured-data/uploads.txt"); ?>
         </pre>
     </div>
+    <h2>Attack Controls</h2>
+    <button onclick="startAttack('dtp')">Start DTP Attack</button>
+    <button onclick="stopAttack('dtp')">Stop DTP Attack</button>
+    <button onclick="startAttack('vlan')">Start VLAN Hopping Attack</button>
+    <button onclick="stopAttack('vlan')">Stop VLAN Hopping Attack</button>
 </body>
 </html>
