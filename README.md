@@ -1,7 +1,8 @@
-# BetterCap-AIO
+# BetterCap-AIO + Scrapy Integration
+
 BetterCap-AIO script for images, videos, username + Password created by GPT
 
-Download the files abd place them in the corresponding dir's
+Download the files and place them in the corresponding dir's
 AIO.cap in your working directory(caplets)
 /usr/local/share/bettercap/ui/captured.html
 /usr/local/share/bettercap/ui/js/enhanced-capture.js
@@ -32,3 +33,26 @@ AIO.cap captures usernames, passwords, and media uploads, and it saves the data 
 AIO.js enhances the capture logic and dynamically logs the data.
 
 The Bettercap UI displays the captured data, refreshing automatically.
+
+---
+V2 - Python Install
+---
+Install Python from main site:
+https://www.python.org/downloads/
+
+Checking if Python is Installed
+Before installing PIP, you need to ensure that Python is already installed on your system. You can check this by running the following command in the command prompt
+
+python --version
+If it is installed, You will see something like this:
+
+Python 3.x.x
+
+---
+V2 - Scrapy install
+---
+Run the following command to install Scrapy using pip:
+pip install scrapy
+
+Confirm installation by running:
+scrapy --version
