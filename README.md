@@ -18,8 +18,6 @@ C:\ProgramData\bettercap\caplets\bk-aio\aio_scrapy\spiders\exploit_spider
 C:\ProgramData\bettercap\caplets\bk-aio\aio_scrapy\settings.Python
 
 /usr/local/share/bettercap/ui/captured.html
-
-/usr/local/share/bettercap/ui/js/enhanced-capture.js
 ````
 
 Make a Directory for cap-data
