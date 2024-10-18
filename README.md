@@ -32,57 +32,16 @@ Use Bettercap's built-in HTTP UI to serve the captured data.
 Capture and log sensitive information like usernames, passwords, and file uploads.
 Display the captured data in the web UI in real-time.
 
-enchanced-capture.js
-Capture usernames, passwords, image uploads, and video uploads.
-Write the captured data into a text file that will be served via the UI.
-Display the captured data dynamically in the UI.
 
 **To Run:**
 ```` sudo bettercap -caplet AIO.cap ````
+or
+CMD/Powershell
+```` bettercap -caplet AIO.cap ````
 
 **Access the UI:**
 Visit http://127.0.0.1/captured.html to see the captured credentials, uploads, and other data in real-time.
 
-
-Summary
-AIO.cap captures usernames, passwords, and media uploads, and it saves the data to files.
-AIO.js enhances the capture logic and dynamically logs the data.
-The Bettercap UI displays the captured data, refreshing automatically.
-Added Start/Stop buttons for the http-ui for dtp+vlanhop(needs testing)
-
-
-Need to edit Settings.py
-````
-# aio_scraper/aio_scraper/settings.py
-
-BOT_NAME = 'aio_scraper'
-
-SPIDER_MODULES = ['aio_scraper.spiders']
-NEWSPIDER_MODULE = 'aio_scraper.spiders'
-
-# Define the user-agent (optional) if needed for web scraping.
-USER_AGENT = 'AIOScraper (+http://www.yourdomain.com)'
-
-# Configure item pipelines if needed (for post-processing)
-ITEM_PIPELINES = {
-    'aio_scraper.pipelines.AioScraperPipeline': 300,
-}
-
-# Enable or adjust logging
-LOG_LEVEL = 'INFO'
-
-# Auto-throttle settings to avoid overwhelming target sites
-AUTOTHROTTLE_ENABLED = True
-
-# Obey robots.txt rules (disable if you need to scrape unrestricted)
-ROBOTSTXT_OBEY = False
-
-# Set settings whose default value is deprecated to a future-proof value
-REQUEST_FINGERPRINTER_IMPLEMENTATION = "2.7"
-TWISTED_REACTOR = "twisted.internet.asyncioreactor.AsyncioSelectorReactor"
-FEED_EXPORT_ENCODING = "utf-8"**
-
-````
 
 ---
 V2 - Python Install
