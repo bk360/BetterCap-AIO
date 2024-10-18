@@ -1,0 +1,156 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Custom Attacks</div>
+                <div class="card-body">
+                    <button id="start-dtp-attack" class="btn btn-primary">Start DTP Attack</button>
+                    <button id="stop-dtp-attack" class="btn btn-danger">Stop DTP Attack</button>
+                    <button id="start-vlan-hopping" class="btn btn-primary">Start VLAN Hopping</button>
+                    <button id="stop-vlan-hopping" class="btn btn-danger">Stop VLAN Hopping</button>
+                    <div id="status" class="mt-3"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Captured data section -->
+    <div class="row mt-4">
+        <div class="col-md-12">
+            <div class="card">
+                <div class="card-header">Captured Data</div>
+                <div class="card-body">
+                    <div id="captured-data">
+                        <h2>Captured Credentials</h2>
+                        <ul id="credentials"></ul>
+                        <h2>Uploaded Files</h2>
+                        <ul id="uploads"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    var updateStatus = function(message) {
+        $('#status').text(message);
+    };
+
+    var isWindows = navigator.userAgent.indexOf('Win') !== -1;
+    var isLinux = navigator.userAgent.indexOf('Linux') !== -1;
+
+    var executeCommand = function(cmd) {
+        return $.ajax({
+            url: 'api/session',
+            method: 'POST',
+            data: JSON.stringify({cmd: cmd}),
+            contentType: 'application/json'
+        });
+    };
+
+    var startDTPAttack = function() {
+        updateStatus('Starting DTP Attack...');
+        var cmd = isWindows 
+            ? 'python "C:/Program Data/bettercap/caplets/bk-aio/dtp_attack.py"' 
+            : 'python /usr/local/share/bettercap/caplets/bk-aio/dtp_attack.py';
+        executeCommand(cmd)
+            .done(function() {
+                updateStatus('DTP Attack started');
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                updateStatus('Failed to start DTP Attack: ' + errorThrown);
+            });
+    };
+
+    var stopDTPAttack = function() {
+        updateStatus('Stopping DTP Attack...');
+        var cmd = isWindows 
+            ? 'taskkill /F /IM dtp_attack.py' 
+            : '!pkill -f dtp_attack.py';
+        executeCommand(cmd)
+            .done(function() {
+                updateStatus('DTP Attack stopped');
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                updateStatus('Failed to stop DTP Attack: ' + errorThrown);
+            });
+    };
+
+    var startVLANHopping = function() {
+        updateStatus('Starting VLAN Hopping...');
+        var cmd = isWindows 
+            ? 'python "C:/Program Data/bettercap/caplets/bk-aio/vlan_hopping.py"' 
+            : 'python /usr/local/share/bettercap/caplets/bk-aio/vlan_hopping.py';
+        executeCommand(cmd)
+            .done(function() {
+                updateStatus('VLAN Hopping started');
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                updateStatus('Failed to start VLAN Hopping: ' + errorThrown);
+            });
+    };
+
+    var stopVLANHopping = function() {
+        updateStatus('Stopping VLAN Hopping...');
+        var cmd = isWindows 
+            ? 'taskkill /F /IM vlan_hopping.py' 
+            : '!pkill -f vlan_hopping.py';
+        executeCommand(cmd)
+            .done(function() {
+                updateStatus('VLAN Hopping stopped');
+            })
+            .fail(function(jqXHR, textStatus, errorThrown) {
+                updateStatus('Failed to stop VLAN Hopping: ' + errorThrown);
+            });
+    };
+
+    $('#start-dtp-attack').on('click', startDTPAttack);
+    $('#stop-dtp-attack').on('click', stopDTPAttack);
+    $('#start-vlan-hopping').on('click', startVLANHopping);
+    $('#stop-vlan-hopping').on('click', stopVLANHopping);
+
+    // Function to load and update captured data
+    function loadCapturedData() {
+        fetch('/captured-data/processed_credentials.txt')
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('credentials').innerHTML = data.split('\n')
+                    .filter(cred => cred.trim())
+                    .map(cred => `<li>${cred}</li>`)
+                    .join('');
+            })
+            .catch(error => {
+                console.error('Error fetching credentials:', error);
+            });
+
+        fetch('/captured-data/file_uploads.txt')
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.text();
+            })
+            .then(data => {
+                document.getElementById('uploads').innerHTML = data.split('\n')
+                    .filter(upload => upload.trim())
+                    .map(upload => {
+                        var [ip, file] = upload.split(' | File: ');
+                        return `<li>${ip} - <a href="/captured-data/uploads/${file}" target="_blank">${file}</a></li>`;
+                    })
+                    .join('');
+            })
+            .catch(error => {
+                console.error('Error fetching uploads:', error);
+            });
+    }
+
+    // Load data immediately
+    loadCapturedData();
+
+    // Refresh data every 30 seconds
+    setInterval(loadCapturedData, 30000);
+})();
+</script>
